@@ -1,7 +1,10 @@
 
 ######################################################################
-## Please use the following code to configure the 7-segment display ##
-## Created by Madhava Vemuri 										##
+## This file defines a class to write the 7 segment LED display on  ##
+## the Raspberry Pi 4B, using GPIO pins,as listed below.            ##
+##                                                                  ##
+##  
+##  Created by Madhava Vemuri 										##
 ## Date 2/25/25														##
 ## Please use the following circuit diagram in page 24 to make the 	##
 ## connections. Double check the connections before you turn the Pi ##
@@ -37,7 +40,7 @@ LED_pin_g  = 25 # LED cathode to g  is connected to GPIO 25 which is pin 22
 LED_pin_DP = 26 # LED cathode to DP is connected to GPIO 26 which is pin 37
 
 ## Array of pins for indexing
-ledPins = [ LED_pin_a, LED_pin_b, LED_pin_c, LED_pin_d, LED_pin_e, LED_pin_f, LED_pin_g, LED_pin_DP ]
+ledPins = [ LED_pin_a, LED_pin_b, LED_pin_c, LED_pin_d, LED_pin_e, LED_pin_f, LED_pin_g ] #, LED_pin_DP ]
 
 # Constants for decimal point 
 DP_OFF     = 0  # Decimal point OFF
@@ -55,10 +58,12 @@ class sevenSegment():
         GPIO.setmode(GPIO.BCM) #Here we are setting the BCM mode
 
         # Setup the pin as output
-        for i in range( len(ledPins) ):
-            GPIO.setup(ledPins[i], GPIO.OUT) # Here this sets the GPIO PIN as OUTPUT
+        for pinIdx in range( len(ledPins) ):
+            GPIO.setup(ledPins[pinIdx], GPIO.OUT) # This sets the GPIO PIN as OUTPUT
+        GPIO.setup(LED_pin_DP, GPIO.OUT) # This sets the Decimal Point GPIO PIN as OUTPUT
 
-    def setValue(self, newVal, dpVal=DP_OFF):
+
+    def setDisplay(self, newVal, dpVal=DP_OFF):
         if ( newVal < 0 ) | (newVal > 9):
             # Error, out of range
             self.val        = -1
@@ -70,12 +75,18 @@ class sevenSegment():
             self.segPattern = displayPattern[newVal]
             self.DP         = dpVal
 
-    def writeDisplay(self, dpVal=DP_OFF):
+
+    def showDisplay(self, dpVal=DP_OFF):
         self.DP = dpVal
+        ledSegment = 0
         print(f" Dilpay value: {self.val} -- Pattern: {self.segPattern}, DP: {self.DP}")
-        for j in range( len(self.segPattern) ):
-            print(f"    LED_pin_{ chr( ord('a') + j ) }: {self.segPattern[j]}")
-        print(f"   LED_pin_DP: {self.DP}")
+        for ledSegment in range( len(ledPins) ):
+            print(f"    LED_pin_{ chr( ord('a') + ledSegment ) } = {ledPins[ledSegment]} : {self.segPattern[ledSegment]}")
+            GPIO.output(ledPins[ledSegment], self.segPattern[ledSegment])
+
+        print(f"   LED_pin_DP = {LED_pin_DP} : {self.DP}")
+        GPIO.output(LED_pin_DP, self.DP)
+
 
 
 ## Unit Test Code:
@@ -87,21 +98,7 @@ if __name__ == '__main__':
     myDigit = sevenSegment()
 
     for i in range(10):
-        myDigit.setValue(i)
-        myDigit.writeDisplay()
+        myDigit.setDisplay(i)
+        myDigit.showDisplay()
         
     print(ledPins)
-
-
-
-# Turning on the LED by passing output LOW to the LED
-# for example to create digit 3 the logic is given below
-#(a=LOW,b=LOW,c=LOW,d=LOW,e=HIGH,f=HIGH,g=LOW,DP=LOW) 
-GPIO.output(LED_pin_a,GPIO.LOW)
-GPIO.output(LED_pin_b,GPIO.LOW) 
-GPIO.output(LED_pin_c,GPIO.LOW)
-GPIO.output(LED_pin_d,GPIO.LOW) 
-GPIO.output(LED_pin_e,GPIO.HIGH)
-GPIO.output(LED_pin_f,GPIO.HIGH) 
-GPIO.output(LED_pin_g,GPIO.LOW)
-GPIO.output(LED_pin_DP,GPIO.LOW) 
