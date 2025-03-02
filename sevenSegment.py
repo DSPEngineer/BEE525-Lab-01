@@ -69,7 +69,7 @@ class sevenSegment():
     # This method does not modify what is displayed. 
     def setDisplay(self, newVal, dpVal=DP_OFF):
         if ( newVal < 0 ) | (newVal > 9):
-            # Error, value is out of range, reset to init state
+            # Error, value is out of range, clear all segments
             self.val        = -1
             self.segPattern = displayPattern[' ']
             self.DP         = DP_OFF
@@ -82,9 +82,8 @@ class sevenSegment():
     # set the segments and decimal point of the display. 
     def showDisplay(self, dpVal=-1):
         ledSegment = 0
-        print(f" Dilpay value: {self.val} -- Pattern: {self.segPattern}, DP: {self.DP}")
         for ledSegment in range( len(ledPins) ):
-            print(f"    LED_pin_{ chr( ord('a') + ledSegment ) } = {ledPins[ledSegment]} : {self.segPattern[ledSegment]}")
+            ## print(f"    LED_pin_{ chr( ord('a') + ledSegment ) } = {ledPins[ledSegment]} : {self.segPattern[ledSegment]}")
             GPIO.output(ledPins[ledSegment], self.segPattern[ledSegment])
         # separate handling of the decimal point. Use "dpVal" as flag to override the class value, using the
         # following algorithm:
@@ -92,7 +91,6 @@ class sevenSegment():
         # otherwise set DP_ON, if the value is other than DP_OFF.
         # If dpVal is not provided, usee the "self.DP" value stored in the class.
         showDP = self.DP if dpVal==-1 else ( DP_OFF if dpVal == DP_OFF else DP_ON )
-        print(f"   LED_pin_DP = {LED_pin_DP} : { showDP}")
         GPIO.output(LED_pin_DP, showDP)
 
 

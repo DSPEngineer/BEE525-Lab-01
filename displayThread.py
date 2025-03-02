@@ -11,38 +11,42 @@ from threading import Thread
 from time import sleep
 from datetime import datetime
 
-import sevenSegment
+import sevenSegment as seg
 
 
 # custom thread class as 7 segment driver
 class displayThread(Thread):
+
     # Initialize the thread 
     def __init__(self):
         ## need to initiaze the parent class
         Thread.__init__(self)
-        # Create an instance for a signle 7 segment display
-        digit = sevenSegment()
-        
-        digit.setDisplay()
-        myDigit.showDisplay()
-        
-
+        ## Set default attributes
         self.display   = -1
         self.runThread =  1
-        print(f"Initializing thread to run={self.runThread}.")
-        print(f"  Display: {self.display}")
+        # Create an instance for a signle 7 segment display
+        self.digit = seg.sevenSegment()
+        self.digit.setDisplay(-1)
+        self.digit.showDisplay()
 
     # override the run function
     def run(self):
-
+        # Thread's loop, run while attribute "runThread" is 1 
         while self.runThread == 1:
+          # algoritm is to refresh display every .3 seconde
+          self.digit.showDisplay()
           sleep(.3)
-          # display a message
-          print(f", {self.display}", end='')
 
+    # call segmentDisplay.setDisplay to store the new value 
     def setDisplay(self, val):
         self.display = val
-        print(f"\n  -- New: {self.display}", end='')
+        self.digit.setDisplay(val)
+
 
     def stop(self):
         self.runThread = 0
+
+
+## Unit Test Code:
+if __name__ == '__main__':
+    print(displayPattern[' '])
