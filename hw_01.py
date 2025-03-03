@@ -43,10 +43,10 @@ while count != "exit":
     ## Display the final zero digit
     th.setDisplay(x)
 
-    print(f"--- Countdown comlete:")
-    print(f"---         Start: { start_time.strftime('%H:%M:%S.%f')} " )
-    print(f"---           End: { end_time.strftime('%H:%M:%S.%f')} " )
-    print(f"--- Total Elapsed: { (end_time - start_time)} ")
+    print(f"--- Countdown comlete in: { (end_time - start_time)} ")
+#    print(f"---      Elapsed Time: { (end_time - start_time)} ")
+    print(f"---                Start: { start_time.strftime('%H:%M:%S.%f')} " )
+    print(f"---                  End: { end_time.strftime('%H:%M:%S.%f')} " )
 
 
 ## Clear the display
