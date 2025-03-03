@@ -11,7 +11,6 @@
 ## connections. Double check the connections before you turn the Pi ##
 ######################################################################
 
-import sevenSegment as seg
 import RPi.GPIO as GPIO 	#Import the Raspberry Pi GPIO Library
 
 # Data for segment values, without the decimal point
