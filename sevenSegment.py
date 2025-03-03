@@ -77,7 +77,7 @@ class sevenSegment():
             # Value is in range
             self.val        = newVal
             self.segPattern = displayPattern[newVal]
-            self.DP         = dpVal
+            self.DP         = DP_OFF if dpVal==DP_OFF else DP_ON
 
     # set the segments and decimal point of the display. 
     def showDisplay(self, dpVal=-1):
@@ -96,9 +96,9 @@ class sevenSegment():
 
 ## Unit Test Code:
 if __name__ == '__main__':
-    print(displayPattern[' '])
+    print(f"' ': {displayPattern[' ']}" )
     for i in range(10):
-      print(f"{i}: {displayPattern[i]}")
+      print(f" {i}: {displayPattern[i]}")
 
     myDigit = sevenSegment()
 

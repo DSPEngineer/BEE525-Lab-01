@@ -41,7 +41,7 @@ while count != "exit":
     end_time = datetime.now()
 
     ## Display the final zero digit
-    th.setDisplay(x)
+    th.setDisplay(x, 1)
 
     print(f"--- Countdown comlete in: { (end_time - start_time)} ")
 #    print(f"---      Elapsed Time: { (end_time - start_time)} ")

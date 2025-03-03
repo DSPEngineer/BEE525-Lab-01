@@ -12,6 +12,8 @@ from time import sleep
 from datetime import datetime
 
 import sevenSegment as seg
+from sevenSegment import DP_ON
+from sevenSegment import DP_OFF
 
 
 # custom thread class as 7 segment driver
@@ -26,8 +28,8 @@ class displayThread(Thread):
         self.runThread =  1
         # Create an instance for a signle 7 segment display
         self.digit = seg.sevenSegment()
-        self.digit.setDisplay(-1)
-        self.digit.showDisplay()
+        self.digit.setDisplay(-1, 1)
+        self.digit.showDisplay(1)
 
     # override the run function
     def run(self):
@@ -35,12 +37,13 @@ class displayThread(Thread):
         while self.runThread == 1:
           # algoritm is to refresh display every .3 seconde
           self.digit.showDisplay()
-          sleep(.3)
+          sleep(.1)
 
     # call segmentDisplay.setDisplay to store the new value 
-    def setDisplay(self, val):
+    def setDisplay(self, val, dp=0):
         self.display = val
-        self.digit.setDisplay(val)
+        self.DB=dp
+        self.digit.setDisplay(val, dp)
 
 
     def stop(self):
